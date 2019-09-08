@@ -47,3 +47,18 @@ test {
                 ", Skipped: ${results.sum { it.skippedTestCount }}"
     }
 }
+
+
+sourceSets {
+    main {
+        groovy {
+            // all code files will be in either of the folders
+            srcDirs = ['src', 'vars']
+        }
+    }
+    test {
+        java {
+            srcDir 'test'
+        }
+    }
+}
