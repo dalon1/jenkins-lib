@@ -10,10 +10,10 @@ repositories {
 }
 
 dependencies {
-    compile 'javax.xml.bind:jaxb-api:2.3.0'
-    runtime 'com.sun.xml.bind:jaxb-core:2.3.0.1'
-    runtime 'com.sun.xml.bind:jaxb-impl:2.3.0.1'
-    runtime 'javax.activation:activation:1.1.1' // to run in JDK11
+    //compile 'javax.xml.bind:jaxb-api:2.3.0'
+    //runtime 'com.sun.xml.bind:jaxb-core:2.3.0.1'
+    //runtime 'com.sun.xml.bind:jaxb-impl:2.3.0.1'
+    //runtime 'javax.activation:activation:1.1.1' // to run in JDK11
     compile "org.codehaus.groovy:groovy-all:2.5.0"
     testCompile "com.lesfurets:jenkins-pipeline-unit:1.1"
     testCompile "junit:junit:4.12"
