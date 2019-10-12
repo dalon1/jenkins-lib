@@ -15,11 +15,9 @@ A simple jenkins shared library. For testing purposes
 *Replace `@user` with username*<br>
 *Replace `@password` with password*
 
-### 3. Creating and storing Jenkins jobs
+### 3. Creating and triggering Jenkins jobs
 ```shell
-  ./add-jenkinsjob.sh
+  ./add-jenkinsjob.sh @user @password
 ```
-### 4. Triggering jenkins jobs
-```shell
-  ./run-jenkinsjob.sh
-```
+*Replace `@user` with username*<br>
+*Replace `@password` with password*
