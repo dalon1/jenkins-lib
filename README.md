@@ -5,25 +5,21 @@ A simple jenkins shared library. For testing purposes
 
 ### 1. Creating Jenkinsfiles
 ```shell
-  USER=$(whoami)
-  whoami
-  ls -al
+  ./add-jenkinsfiles.sh
 ```
 ### 2. Creating and storing credentials
 ```shell
-  USER=$(whoami)
-  whoami
-  ls -al
+  ./add-credentials.sh @type @user @password
 ```
+*Replace `@type` with git*<br>
+*Replace `@user` with username*<br>
+*Replace `@password` with password*
+
 ### 3. Creating and storing Jenkins jobs
 ```shell
-  USER=$(whoami)
-  whoami
-  ls -al
+  ./add-jenkinsjob.sh
 ```
 ### 4. Triggering jenkins jobs
 ```shell
-  USER=$(whoami)
-  whoami
-  ls -al
+  ./run-jenkinsjob.sh
 ```
