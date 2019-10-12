@@ -1,0 +1,11 @@
+<flow-definition plugin="workflow-job@2.35">
+<description/>
+<keepDependencies>false</keepDependencies>
+<properties/>
+<definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.74">
+<script>node { echo "Good Morning!" }</script>
+<sandbox>true</sandbox>
+</definition>
+<triggers/>
+<disabled>false</disabled>
+</flow-definition>
