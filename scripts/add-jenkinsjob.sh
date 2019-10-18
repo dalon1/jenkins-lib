@@ -6,7 +6,7 @@ JENKINS_USER="admin"
 JENKINS_TOKEN="11569e938600e9fc42bcf98746c25fe308"
 JENKINS_URL="http://localhost:8083"
 
-APP_NAME="boring-app"
+APP_NAME="boring-app2"
 JOB_NAMES=("${APP_NAME}_CI" "${APP_NAME}_CR" "${APP_NAME}_CD")
 JOB_TEMPLATES=("job-templates/ci-template.xml" "job-templates/cr-template.xml" "job-templates/cd-template.xml")
 
@@ -23,17 +23,17 @@ echo "${TIME}"
 echo '==============================='
 echo ''
 
+# Authenticating to retrieve Jenkins Crumb as part of authentication header
 echo "Authenticating using '${JENKINS_USER}' credentials."
 CRUMB=$(curl -s "${JENKINS_URL}/crumbIssuer/api/json" -u $JENKINS_USER:$JENKINS_TOKEN | jq '.crumb')
 CRUMB=${CRUMB/'"'/''} # x2 to remove double quotes
 CRUMB=${CRUMB/'"'/''} # x2 to remove double quotes
 echo "Jenkins crumb received: ${CRUMB}"
-
+echo "Jenkins Authentication..............................OK"
 
 echo ""
 echo "Updating EPL Jenkins Jobs templates"
 echo ""
-
 
 # Reading and passing arguments to Jenkins Jobs XML Templates
 len=${#JOB_NAMES[@]}
@@ -43,17 +43,20 @@ do
     TMP_TEMPLATE=${TMP_TEMPLATE/'#GIT_URL#'/$GIT_URL}
     TMP_TEMPLATE=${TMP_TEMPLATE/'#GIT_CREDENTIALS_ID#'/$GIT_CREDENTIALS_ID}
     TMP_TEMPLATE=${TMP_TEMPLATE/'#JENKINSFILE#'/$JENKINSFILE}
-    rm ${JOB_TEMPLATES[$i]} && echo TMP_TEMPLATE > ${JOB_TEMPLATES[$i]}
+    echo $TMP_TEMPLATE > "${JOB_NAMES[$i]}.xml"
+    echo "${JOB_NAMES[$i]}.xml.........OK"
 done
+echo "Updating Jenkins Templates..........................OK"
 
 echo ""
 echo "Creating jenkins jobs"
 echo ""
 
+# Passing XML template and creating Jenkins Jobs
 len=${#JOB_NAMES[@]}
 for (( i=0; i < $len; ++i ))
 do
-    TEMPLATE=$(echo "${JOB_TEMPLATES[$i]}")
+    TEMPLATE=$(echo "${JOB_NAMES[$i]}.xml")
     curl -u $JENKINS_USER:$JENKINS_TOKEN \
     --data-binary @$TEMPLATE \
     -H "${CRUMB}" -H "Content-Type:text/xml" \
