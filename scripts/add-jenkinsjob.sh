@@ -5,8 +5,9 @@
 JENKINS_USER="admin"
 JENKINS_TOKEN="11569e938600e9fc42bcf98746c25fe308"
 JENKINS_URL="http://localhost:8083"
+JENKINSFILES=("JenkinsfileCI" "JenkinsfileCR" "JenkinsfileCD")
 
-APP_NAME="boring-app2"
+APP_NAME="boring-app7"
 JOB_NAMES=("${APP_NAME}_CI" "${APP_NAME}_CR" "${APP_NAME}_CD")
 JOB_TEMPLATES=("job-templates/ci-template.xml" "job-templates/cr-template.xml" "job-templates/cd-template.xml")
 
@@ -42,7 +43,7 @@ do
     TMP_TEMPLATE=$(cat "${JOB_TEMPLATES[$i]}")
     TMP_TEMPLATE=${TMP_TEMPLATE/'#GIT_URL#'/$GIT_URL}
     TMP_TEMPLATE=${TMP_TEMPLATE/'#GIT_CREDENTIALS_ID#'/$GIT_CREDENTIALS_ID}
-    TMP_TEMPLATE=${TMP_TEMPLATE/'#JENKINSFILE#'/$JENKINSFILE}
+    TMP_TEMPLATE=${TMP_TEMPLATE/'#JENKINSFILE#'/${JENKINSFILES[$i]}}
     echo $TMP_TEMPLATE > "${JOB_NAMES[$i]}.xml"
     echo "${JOB_NAMES[$i]}.xml.........OK"
 done
@@ -57,10 +58,13 @@ len=${#JOB_NAMES[@]}
 for (( i=0; i < $len; ++i ))
 do
     TEMPLATE=$(echo "${JOB_NAMES[$i]}.xml")
-    curl -u $JENKINS_USER:$JENKINS_TOKEN \
+    curl --include -u $JENKINS_USER:$JENKINS_TOKEN \
     --data-binary @$TEMPLATE \
     -H "${CRUMB}" -H "Content-Type:text/xml" \
     -X POST "${JENKINS_URL}/createItem?name=${JOB_NAMES[$i]}"
+
+    STATUS="OK"
+
 
     echo ""
     echo "${JOB_NAMES[$i]}..........OK"
@@ -83,3 +87,9 @@ do
     echo "Jenkins #1 build URL: ${JENKINS_URL}/job/${JOB_NAMES[$i]}/1/console"
     echo ""
 done
+
+# Clean up workspace
+echo ""
+echo "Cleaning up workspace"
+echo ""
+rm ./*.xml
