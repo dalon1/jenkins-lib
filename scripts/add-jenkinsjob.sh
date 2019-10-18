@@ -7,7 +7,7 @@ JENKINS_TOKEN="11569e938600e9fc42bcf98746c25fe308"
 JENKINS_URL="http://localhost:8083"
 JENKINSFILES=("JenkinsfileCI" "JenkinsfileCR" "JenkinsfileCD")
 
-APP_NAME="boring-app7"
+APP_NAME="boring-app97"
 JOB_NAMES=("${APP_NAME}_CI" "${APP_NAME}_CR" "${APP_NAME}_CD")
 JOB_TEMPLATES=("job-templates/ci-template.xml" "job-templates/cr-template.xml" "job-templates/cd-template.xml")
 
@@ -58,16 +58,22 @@ len=${#JOB_NAMES[@]}
 for (( i=0; i < $len; ++i ))
 do
     TEMPLATE=$(echo "${JOB_NAMES[$i]}.xml")
-    curl --include -u $JENKINS_USER:$JENKINS_TOKEN \
+    RESPONSE=$(curl -u $JENKINS_USER:$JENKINS_TOKEN \
     --data-binary @$TEMPLATE \
     -H "${CRUMB}" -H "Content-Type:text/xml" \
-    -X POST "${JENKINS_URL}/createItem?name=${JOB_NAMES[$i]}"
-
-    STATUS="OK"
-
+    -X POST "${JENKINS_URL}/createItem?name=${JOB_NAMES[$i]}")
 
     echo ""
-    echo "${JOB_NAMES[$i]}..........OK"
+    STATUS="OK"
+    if ! [ -z "${RESPONSE}" ]
+    then
+        echo "$(date) Logs: Error creating jenkins job."
+        echo "$(date) Logs: Jenkins job with similar name is already in Master"
+        STATUS="FAILURE"
+    fi
+
+    echo ""
+    echo "${JOB_NAMES[$i]}..........${STATUS}"
     echo "Jenkins job URL: ${JENKINS_URL}/job/${JOB_NAMES[$i]}"
     echo ""
 done
