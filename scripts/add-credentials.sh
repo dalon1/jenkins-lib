@@ -1,6 +1,8 @@
 #!/bin/bash
 # Done by @AloniD
 
+
+### TEST DATA
 TYPE="git"
 USER="dannel-git"
 USER_PASS="random-password"
@@ -8,6 +10,8 @@ USER_PASS="random-password"
 JENKINS_USER="admin"
 JENKINS_TOKEN="11569e938600e9fc42bcf98746c25fe308"
 JENKINS_URL="http://localhost:8083"
+### TEST DATA
+
 
 TIME=$(date)
 echo ''
@@ -30,6 +34,7 @@ echo "Credentials Username: ${USER}"
 echo "Credentials Password: ${USER_PASS}"
 echo ''
 
+## Creating credentials
 curl --include -X POST "${JENKINS_URL}/credentials/store/system/domain/_/createCredentials" \
 -u $JENKINS_USER:$JENKINS_TOKEN \
 -H "Jenkins-Crumb: ${CRUMB}" \
